@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:16
+    container_name: weather-db
+    environment:
+      POSTGRES_DB: weatherdb
+      POSTGRES_USER: weather
+      POSTGRES_PASSWORD: weather123
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: weather-backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: weatherdb
+      DB_USER: weather
+      DB_PASS: weather123
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: weather-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pg_data:
