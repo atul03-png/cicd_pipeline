@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: atul404/backend
+    image: atul404/backend:${TAG}
     container_name: weather-backend
     environment:
       DB_HOST: db
@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: atul404/frontend
+    image: atul404/frontend:${TAG}
     container_name: weather-frontend
     ports:
       - "80:80"
